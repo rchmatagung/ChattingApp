@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     height: "50px",
     width: "50px",
     top: "0",
+    borderRadius:"500px"
   },
 
   bubble: {
