@@ -1,14 +1,35 @@
 import { makeStyles } from "@material-ui/core";
 import moment from "moment";
 import React from "react";
-import { Delete } from "@material-ui/icons";
-import { gql, useMutation } from "@apollo/client";
+import { Delete, Edit } from "@material-ui/icons";
+import { gql, useMutation, useQuery } from "@apollo/client";
+
+const GetPesan = gql`
+  query MyQuery {
+    messages {
+      id
+      message
+    }
+  }
+`;
 
 /* Query Hapus Pesan */
 const DeleteMessage = gql`
   mutation MyMutation($id: uuid!) {
     delete_messages_by_pk(id: $id) {
       id
+    }
+  }
+`;
+
+/* Query Edit Pesan */
+const UpdateMessage = gql`
+  mutation MyMutation($_eq: uuid!, $message: String!) {
+    update_messages(where: { id: { _eq: $_eq } }, _set: { message: $message }) {
+      returning {
+        id
+        message
+      }
     }
   }
 `;
@@ -64,8 +85,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Chatting = (props) => {
   const classes = useStyles(props);
-  const { id, isMe, message } = props;
+  const { id, isMe, message, dataMessage } = props;
+  const { data } = useQuery(GetPesan);
   const [deleteMessage] = useMutation(DeleteMessage);
+  const [updateMessage] = useMutation(UpdateMessage);
 
   const deletepesan = (id) => {
     deleteMessage({
@@ -73,7 +96,19 @@ const Chatting = (props) => {
         id: id,
       },
     });
-    console.log("id", id);
+  };
+
+  const updatePesan = (id) => {
+    const item = data?.messages.find((item) => item.id === id);
+    const EditPesan = prompt("Silahkan Ubah Pesanmu", item.message);
+    if (EditPesan) {
+      updateMessage({
+        variables: {
+          _eq: id,
+          message: EditPesan,
+        },
+      });
+    }
   };
 
   return (
@@ -82,7 +117,7 @@ const Chatting = (props) => {
       <div className={classes.bubble}>
         <div>{message.message}</div>
         {isMe && <Delete onClick={() => deletepesan(id)} />}
-
+        {isMe && <Edit onClick={() => updatePesan(id)} />}
         <div className={classes.timestamp}>{moment(message.createdAt).format("l LT")}</div>
       </div>
     </div>

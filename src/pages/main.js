@@ -11,7 +11,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Kontak from "./Kontak";
 import Pesan from "./Pesan";
 import MasukkanPesan from "./MasukkanPesan";
-import Wa from "../Wa.png"
+import Wa from "../Wa.png";
 
 const drawerWidth = 300;
 
@@ -55,12 +55,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "40px",
     flexWrap: "wrap",
     height: "100%",
-    backgroundImage: `url(${Wa})`
+    backgroundImage: `url(${Wa})`,
   },
   chatFooter: {
     flexBasis: "100%",
     height: "100px",
-    background:"#25D366",
+    background: "#25D366",
     backgroundImage: `url(${Wa})`,
     borderRadius: "15px",
   },
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     margin: "20px",
     padding: "0",
-    borderRadius:"500px"
+    borderRadius: "500px",
   },
 }));
 
@@ -92,25 +92,18 @@ const Main = (props) => {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-        <Kontak/>
+      <Kontak />
     </div>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
+          <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} className={classes.menuButton}>
             <MenuIcon />
           </IconButton>
           <NamaPesan></NamaPesan>
@@ -151,11 +144,11 @@ const Main = (props) => {
         <div className={classes.toolbar} />
 
         <div className={classes.chatContent}>
-            <Pesan/>
+          <Pesan />
         </div>
 
         <div className={classes.chatFooter}>
-          <MasukkanPesan/>
+          <MasukkanPesan />
         </div>
       </main>
     </div>
